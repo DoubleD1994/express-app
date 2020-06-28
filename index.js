@@ -15,17 +15,36 @@ app.get("/", (req, res) => {
   res.json(data);
 });
 
-app.post("/newItem", (req, res) => {
-  res.send(`a post request with /newItem route on port ${PORT}`);
-});
+//using next() will allow the second block of code to run. This can be done multiple times. Response can only be used once
+app.get(
+  "/item/:id",
+  (req, res, next) => {
+    console.log(req.params.id);
+    let user = Number(req.params.id);
+    console.log(user);
+    console.log(data[user]);
+    res.send(data[user]);
+    next();
+  },
+  (req, res) => {
+    console.log("Did you get the right data?");
+  }
+);
 
-app.put("/item", (req, res) => {
-  res.send(`a put request with /item route on port ${PORT}`);
-});
-
-app.delete("/item", (req, res) => {
-  res.send(`a delete request with /item route on port ${PORT}`);
-});
+app
+  .route("/item")
+  .get((req, res) => {
+    //res.download("images/rocket.jpg");
+    //res.redirect("http://www.linkedin.com");
+    //res.end();
+    res.send(`a get request with /item route on port ${PORT}`);
+  })
+  .put((req, res) => {
+    res.send(`a put request with /item route on port ${PORT}`);
+  })
+  .delete((req, res) => {
+    res.send(`a delete request with /item route on port ${PORT}`);
+  });
 
 app.listen(PORT, () => {
   console.log(`Your server is running on port ${PORT}`);
